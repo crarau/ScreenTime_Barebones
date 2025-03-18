@@ -1,95 +1,95 @@
 # ScreenTime_Barebones
 
-### 프로젝트 소개
+### Project Introduction
 
-- Apple의 Screen Time(스크린 타임)을 활용해 보는 데에 도움을 주는 Bare-bones 프로젝트입니다.
-- **FamilyControls, DeviceActivity, ManagedSettings 3개의 프레임워크를 활용하여 기본적인 Screen Time 기능을 구현**해 봅니다.
-- 사용을 제한할 앱과 원하는 시간대를 선택하면 제한을 적용해주는 앱을 구현합니다.
+- This is a bare-bones project to help you utilize Apple's Screen Time functionality.
+- **Implements basic Screen Time features using three frameworks: FamilyControls, DeviceActivity, and ManagedSettings**.
+- Implements an app that applies restrictions when you select apps to restrict and your desired time periods.
 
-### Screen Time이란?
+### What is Screen Time?
 
-앱과 웹사이트를 얼마나 자주 사용하는지 추적하고, 사용을 제한하도록 하여 휴대폰 사용을 관리할 수 있도록 해주는 Apple의 서비스입니다.
+Screen Time is an Apple service that helps manage phone usage by tracking how often apps and websites are used and allowing usage restrictions.
 
-사용량 추적과 사용 제한의 대상은 사용자 개인이 될 수도 있고, iCloud에 연동되어 있는 자녀가 될 수도 있습니다.
+Usage tracking and restrictions can apply to individual users or to children connected through iCloud.
 
-FamilyControls, DeviceActivity, ManagedSettings 3가지의 프레임워크를 같이 활용하여 Screen Time 관련 기능을 개발할 수 있습니다.
+Screen Time-related features can be developed using three frameworks together: FamilyControls, DeviceActivity, and ManagedSettings.
 
-- **[FamilyControls](https://developer.apple.com/documentation/familycontrols)** : ManagedSettings와 DeviceActivity에 대한 접근을 허용해주며 스크린 타임 기능을 사용할 수 있도록 해주는 프레임워크
-- **[DeviceActivity](https://developer.apple.com/documentation/deviceactivity)** : 앱에서 직접적인 실행을 따로 하지 않아도 사용량을 모니터링 하며, 원하는 시점에 제한 관련 동작을 수행할 수 있도록 해주는 프레임워크
-- **[ManagedSettings](https://developer.apple.com/documentation/managedsettings)** : 실질적으로 앱 사용 제한을 수행해주는 프레임워크
+- **[FamilyControls](https://developer.apple.com/documentation/familycontrols)** : Framework that allows access to ManagedSettings and DeviceActivity, enabling the use of Screen Time features
+- **[DeviceActivity](https://developer.apple.com/documentation/deviceactivity)** : Framework that monitors usage and performs restriction-related actions at desired times without needing to be explicitly run from the app
+- **[ManagedSettings](https://developer.apple.com/documentation/managedsettings)** : Framework that actually performs app usage restrictions
 
-### 프로젝트 구조
+### Project Structure
 
 ```swift
 .
-├── ScreenTime_Barebones // 프로젝트의 메인 타겟입니다.
-│   ├── App
-│   │   ├── ContentView.swift
-│   │   ├── ScreenTime_BarebonesApp.swift
-│   │   └── XCConfig
-│   │       └── shared.xcconfig
-│   ├── Assets.xcassets
-│   │   ├── AccentColor.colorset
-│   │   │   └── Contents.json
-│   │   ├── AppIcon.appiconset
-│   │   │   ├── AppIcon_box.png
-│   │   │   └── Contents.json
-│   │   ├── AppSymbol.imageset
-│   │   │   ├── AppIcon.png
-│   │   │   └── Contents.json
-│   │   └── Contents.json
-│   ├── Extension
-│   │   ├── Bundle+Extension.swift
-│   │   └── Color+Extension.swift
-│   ├── Presentation 
-│   │   ├── ViewModels
-│   │   │   ├── Components
-│   │   │   │   └── MainTabVM.swift
-│   │   │   ├── PermissionVM.swift
-│   │   │   └── ScheduleVM.swift // 스크린타임을 통해 사용시간을 트래킹하는 스케쥴을 관리하기 위한 ViewModel 
-│   │   └── Views
-│   │       ├── Components
-│   │       │   └── MainTabView.swift
-│   │       ├── MonitoringView
-│   │       │   └── MonitoringView.swift
-│   │       ├── PermissionView
-│   │       │   └── PermissionView.swift
-│   │       └── ScheduleView
-│   │           └── ScheduleView.swift
-│   ├── Preview Content
-│   │   └── Preview Assets.xcassets
-│   │       └── Contents.json
-│   ├── ScreenTime_Barebones.entitlements
-│   └── Utils
-│       ├── DeviceActivtyManager.swift
-│       └── FamilyControlsManager.swift
-├── DeviceActivityMonitor // 생성한 스크린타임 스케쥴에 기반한 이벤트 발생 시 호출되는 메서드를 관리하기 위한 타겟
-│   ├── DeviceActivityMonitor.entitlements
-│   ├── DeviceActivityMonitorExtension.swift
-│   └── Info.plist
-├── ScreenTimeReport // 스크린타임을 통해 사용내역을 조회하고 관리하기 위한 타겟
-│   ├── Info.plist
-│   ├── ScreenTimeActivityReport.swift
-│   ├── ScreenTimeReport.entitlements
-│   ├── ScreenTimeReport.swift
-│   ├── TotalActivityReport.swift
-│   └── TotalActivityView.swift
-├── ShieldAction // 스크린타임을 통해 앱 사용이 제한된 화면에서의 이벤트 발생 시 호출되는 메서드를 관리하기 위한 타겟
-│   ├── Info.plist
-│   ├── ShieldAction.entitlements
-│   └── ShieldActionExtension.swift
-└── ShieldConfiguration // 스크린타임을 통해 앱 사용이 제한된 화면을 커스텀할 수 있게 도와주는 타겟
+├── ScreenTime_Barebones // Main target of the project
+│   ├── App
+│   │   ├── ContentView.swift
+│   │   ├── ScreenTime_BarebonesApp.swift
+│   │   └── XCConfig
+│   │       └── shared.xcconfig
+│   ├── Assets.xcassets
+│   │   ├── AccentColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── AppIcon.appiconset
+│   │   │   ├── AppIcon_box.png
+│   │   │   └── Contents.json
+│   │   ├── AppSymbol.imageset
+│   │   │   ├── AppIcon.png
+│   │   │   └── Contents.json
+│   │   └── Contents.json
+│   ├── Extension
+│   │   ├── Bundle+Extension.swift
+│   │   └── Color+Extension.swift
+│   ├── Presentation 
+│   │   ├── ViewModels
+│   │   │   ├── Components
+│   │   │   │   └── MainTabVM.swift
+│   │   │   ├── PermissionVM.swift
+│   │   │   └── ScheduleVM.swift // ViewModel for managing schedules that track usage time through Screen Time
+│   │   └── Views
+│   │       ├── Components
+│   │       │   └── MainTabView.swift
+│   │       ├── MonitoringView
+│   │       │   └── MonitoringView.swift
+│   │       ├── PermissionView
+│   │       │   └── PermissionView.swift
+│   │       └── ScheduleView
+│   │           └── ScheduleView.swift
+│   ├── Preview Content
+│   │   └── Preview Assets.xcassets
+│   │       └── Contents.json
+│   ├── ScreenTime_Barebones.entitlements
+│   └── Utils
+│       ├── DeviceActivtyManager.swift
+│       └── FamilyControlsManager.swift
+├── DeviceActivityMonitor // Target for managing methods called when events occur based on created Screen Time schedules
+│   ├── DeviceActivityMonitor.entitlements
+│   ├── DeviceActivityMonitorExtension.swift
+│   └── Info.plist
+├── ScreenTimeReport // Target for viewing and managing usage history through Screen Time
+│   ├── Info.plist
+│   ├── ScreenTimeActivityReport.swift
+│   ├── ScreenTimeReport.entitlements
+│   ├── ScreenTimeReport.swift
+│   ├── TotalActivityReport.swift
+│   └── TotalActivityView.swift
+├── ShieldAction // Target for managing methods called when events occur on screens where app usage is restricted through Screen Time
+│   ├── Info.plist
+│   ├── ShieldAction.entitlements
+│   └── ShieldActionExtension.swift
+└── ShieldConfiguration // Target that helps customize screens where app usage is restricted through Screen Time
     ├── AppSymbol.png
     ├── Info.plist
     ├── ShieldConfiguration.entitlements
     └── ShieldConfigurationExtension.swift
 ```
 
-### 핵심 코드
+### Core Code
 
-**✅ 스크린타임 사용권한 요청하기**
+**✅ Requesting Screen Time Permissions**
 
-- 스크린타임 API는 사용자가 직접 권한 설정을 완료한 이후부터 사용가능합니다.
+- The Screen Time API can only be used after the user has completed the permission settings themselves.
 
 ```swift
 // ./ScreenTime_Barebones/Utils/FamilyControlsManager.swift
@@ -97,10 +97,10 @@ FamilyControls, DeviceActivity, ManagedSettings 3가지의 프레임워크를 �
 import FamilyControls
 
 class FamilyControlsManager: ObservableObject {
-	// MARK: - FamilyControls 권한 상태를 관리하는 객체
+	// MARK: - Object managing FamilyControls permission status
     let authorizationCenter = AuthorizationCenter.shared
     
-    // MARK: - ScreenTime 권한 상태를 활용하기 위한 멤버 변수
+    // MARK: - Member variable to track Screen Time permission status
     @Published var hasScreenTimePermission: Bool = false
 
 	@MainActor
@@ -112,12 +112,12 @@ class FamilyControlsManager: ObservableObject {
                 do {
                     try await authorizationCenter.requestAuthorization(for: .individual)
                     hasScreenTimePermission = true
-                    // 동의함
+                    // Agreed
                 } catch {
-                    // 동의 X
-                    print("Failed to enroll Aniyah with error: \(error)")
+                    // Disagreed
+                    print("Failed to enroll with error: \(error)")
                     hasScreenTimePermission = false
-                    // 사용자가 허용안함.
+                    // User did not allow permission
                     // Error Domain=FamilyControls.FamilyControlsError Code=5 "(null)
                 }
             }
@@ -126,17 +126,17 @@ class FamilyControlsManager: ObservableObject {
 }
 ```
 
-**✅ 스크린타임 스케쥴 생성하기**
+**✅ Creating a Screen Time Schedule**
 
-- 특정 시간 동안 앱 사용을 확인할 수 있는 스케쥴을 생성할 수 있습니다.
+- You can create a schedule to monitor app usage during specific time periods.
 
 ```swift
 // ./ScreenTime_Barebones/Utils/DeviceActivityManager.swift
 
 class DeviceActivityManager: ObservableObject {
 
-	/// DeviceActivityCenter는 설정한 스케줄에 대한 모니터링을 제어해주는 클래스입니다.
-    /// 모니터링 시작 및 중단 등의 동작 처리를 위해 인스턴스를 생성해줍니다.
+	/// DeviceActivityCenter is a class that controls monitoring for schedules you've set.
+    /// We create an instance to handle actions like starting and stopping monitoring.
     let deviceActivityCenter = DeviceActivityCenter()
 
 	func handleStartDeviceActivityMonitoring(
@@ -156,12 +156,12 @@ class DeviceActivityManager: ObservableObject {
             )
             
             do {
-                /// deviceActivityName 인자로 받은 이름의 Device Activity에 대해 schedule로 입력받은 기간의 모니터링을 시작합니다.
+                /// Starts monitoring for the Device Activity with the name passed in deviceActivityName during the period passed in schedule.
                 try deviceActivityCenter.startMonitoring(deviceActivityName, during: schedule)
-                /// 디버깅용 주석입니다.
-                /// 현재 모니터링중인 DeviceActivityName과 스케줄을 확인할 수 있습니다.
-//                print("모니터링 시작 --> \(deviceActivityCenter.activities.description)")
-//                print("스케줄 --> \(schedule)")
+                /// Comment for debugging.
+                /// You can check the currently monitored DeviceActivityName and schedule.
+//                print("Monitoring started --> \(deviceActivityCenter.activities.description)")
+//                print("Schedule --> \(schedule)")
             } catch {
                 print("Unexpected error: \(error).")
             }
@@ -178,12 +178,11 @@ extension DeviceActivityName {
 extension ManagedSettingsStore.Name {
     static let daily = Self("daily")
 }
-
 ```
 
-**✅ 스크린타임 스케쥴 이벤트 발생 시 앱 사용 제한하기**
+**✅ Restricting App Usage When Screen Time Schedule Events Occur**
 
-- 스케쥴이 실행되는 동안 발생하는 이벤트를 활용해 앱 사용을 제한할 수 있습니다.
+- You can restrict app usage by utilizing events that occur during schedule execution.
 
 ```swift
 // ./DeviceActivityMonitor/DeviceActivityMonitorExtension.swift
@@ -192,7 +191,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 	let store = ManagedSettingsStore(named: .daily)
     let vm = ScheduleVM()
 
-	// MARK: - 스케줄의 시작 시점 이후 처음으로 기기가 사용될 때 호출되는 메서드
+	// MARK: - Method called when the device is first used after the start time of the schedule
     override func intervalDidStart(for activity: DeviceActivityName) {
         super.intervalDidStart(for: activity)
         
@@ -209,22 +208,22 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         store.shield.applicationCategories = ShieldSettings.ActivityCategoryPolicy.specific(categoryTokens)
     }
     
-    // MARK: - 스케줄의 종료 시점 이후 처음으로 기기가 사용될 때 or 모니터링 중단 시에 호출되는 메서드
+    // MARK: - Method called when the device is first used after the end time of the schedule or when monitoring is stopped
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
         
         // Handle the end of the interval.
-        // 해당 store에 대해 적용되던 모든 실드 해제
+        // Remove all shields that were applied to the store
         store.clearAllSettings()
     }
 }
 ```
 
-**✅ 스케쥴 동안 사용이 제한된 앱에서 보여지는 화면 커스텀하기**
+**✅ Customizing the Screen Shown in Apps Restricted During Schedule**
 
-- 사용이 제한된 앱을 실행할 경우 스크린타임이 Shield View를 해당 앱에 덧씌워 앱 사용을 제한합니다.
+- When a restricted app is launched, Screen Time overlays a Shield View on the app to restrict its usage.
 
-- Shield View는 제한된 몇 가지 항목에 대해 커스텀이 가능합니다.
+- The Shield View can be customized for a limited number of elements.
 
 ```swift
 // ./ShieldConfiguration/ShieldConfigurationExtension.swift
@@ -239,11 +238,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             color: ColorManager.accentColor
         )
         let CUSTOM_SUBTITLE = ShieldConfiguration.Label(
-            text: "\(tokenName)은(는) 사용이 제한되었습니다.",
+            text: "\(tokenName) is restricted.",
             color: .black
         )
         let CUSTOM_PRIMARY_BUTTON_LABEL = ShieldConfiguration.Label(
-            text: "종료하기",
+            text: "Close",
             color: .white
         )
         let CUSTOM_PRIAMRY_BUTTON_BACKGROUND: UIColor = ColorManager.accentColor
@@ -376,77 +375,13 @@ struct TotalActivityReport: DeviceActivityReportScene {
 }
 ```
 
-
-
-
-
-```swift
-// ./ScreenTimeReport/TotalActivityReport.swift
-
-import DeviceActivity
-
-extension DeviceActivityReport.Context {
-		static let totalActivity = Self("Total Activity")
-}
-
-struct TotalActivityReport: DeviceActivityReportScene {
-		// Define which context your scene will represent.
-    /// 보여줄 리포트에 대한 컨텍스트를 정의해줍니다.
-    let context: DeviceActivityReport.Context = .totalActivity
-    
-    // Define the custom configuration and the resulting view for this report.
-    /// 어떤 데이터를 사용해서 어떤 뷰를 보여줄 지 정의해줍니다. (SwiftUI View)
-    let content: (ActivityReport) -> TotalActivityView
-    
-    /// DeviceActivityResults 데이터를 받아서 필터링
-    func makeConfiguration(
-        representing data: DeviceActivityResults<DeviceActivityData>) async -> ActivityReport {
-        // Reformat the data into a configuration that can be used to create
-        // the report's view.
-        var totalActivityDuration: Double = 0 /// 총 스크린 타임 시간
-        var list: [AppDeviceActivity] = [] /// 사용 앱 리스트
-        
-        /// DeviceActivityResults 데이터에서 화면에 보여주기 위해 필요한 내용을 추출해줍니다.
-        for await eachData in data {
-            /// 특정 시간 간격 동안 사용자의 활동
-            for await activitySegment in eachData.activitySegments {
-                /// 활동 세그먼트 동안 사용자의 카테고리 별 Device Activity
-                for await categoryActivity in activitySegment.categories {
-                    /// 이 카테고리의 totalActivityDuration에 기여한 사용자의 application Activity
-                    for await applicationActivity in categoryActivity.applications {
-                        let appName = (applicationActivity.application.localizedDisplayName ?? "nil") /// 앱 이름
-                        let bundle = (applicationActivity.application.bundleIdentifier ?? "nil") /// 앱 번들id
-                        let duration = applicationActivity.totalActivityDuration /// 앱의 total activity 기간
-                        totalActivityDuration += duration
-                        let numberOfPickups = applicationActivity.numberOfPickups /// 앱에 대해 직접적인 pickup 횟수
-                        let token = applicationActivity.application.token /// 앱의 토큰
-                        let appActivity = AppDeviceActivity(
-                            id: bundle,
-                            displayName: appName,
-                            duration: duration,
-                            numberOfPickups: numberOfPickups,
-                            token: token
-                        )
-                        list.append(appActivity)
-                    }
-                }
-
-            }
-        }
-        
-        /// 필터링된 ActivityReport 데이터들을 반환
-        return ActivityReport(totalDuration: totalActivityDuration, apps: list)
-    }
-}
-```
-
 ```swift
 // ./ScreenTimeReport/TotalActivityView.swift
 
 import SwiftUI
 import FamilyControls
 
-// MARK: - MonitoringView에서 보여줄 SwiftUI 뷰
+// MARK: - SwiftUI view to display in MonitoringView
 struct TotalActivityView: View {
     var activityReport: ActivityReport
     
@@ -454,14 +389,13 @@ struct TotalActivityView: View {
 
         ...
 
-        /// Report View를 원하는 대로 구성합니다.
+        /// Configure the Report View as desired.
 
         ...
 
     }
 }
 ```
-<br>
 
 ## **☕️ CoffeeNaeriRei**  
 
@@ -473,18 +407,18 @@ struct TotalActivityView: View {
 | **🎨 Designer**
 <br>
 
-### 참고자료
+### References
 
-**📼 Apple Developer** **Videos**
+**📼 Apple Developer Videos**
 
 [Meet the Screen Time API - WWDC21 - Videos - Apple Developer](https://developer.apple.com/videos/play/wwdc2021/10123/)
 
 [What's new in Screen Time API - WWDC22 - Videos - Apple Developer](https://developer.apple.com/videos/play/wwdc2022/110336/)
 
-**🛠️ 삽질기록**
+**🛠️ Troubleshooting Records**
 
 [Screen Time API](https://www.notion.so/Screen-Time-API-c76cf8289958418a90d14e6ffd298e14?pvs=21)
 
-**📚 WWDC 영상 정리**
+**📚 WWDC Video Summaries**
 
-[Screen Time 관련 WWDC 영상을 보고 정리한 내용](https://healthy-degree-cc2.notion.site/Screen-Time-6fda458dbf0e43f5893afc9f1641844c?pvs=4)
+[Summary of Screen Time related WWDC videos](https://healthy-degree-cc2.notion.site/Screen-Time-6fda458dbf0e43f5893afc9f1641844c?pvs=4)
