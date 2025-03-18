@@ -9,10 +9,10 @@ import SwiftUI
 import FamilyControls
 /**
  
- 1. 권한 설정 확인할 수 있어야함
- 2. 스케쥴 설정(시간 설정)
- 3. 앱 설정
- 4. 설정한 스케쥴 및 앱 설정을 바탕으로 모니터링 스케쥴 만들기
+ 1. Should be able to check permission settings
+ 2. Schedule settings (time settings)
+ 3. App settings
+ 4. Create monitoring schedule based on the set schedule and app settings
  
  */
 
@@ -20,7 +20,7 @@ struct ScheduleView: View {
 //    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var scheduleVM: ScheduleVM
 
-    /// 스케쥴 저장 버튼을 누르기 전 선택한 앱들을 저장하고 있을 변수입니다.
+    /// Variable to store selected apps before pressing the Save Schedule button.
     @State var tempSelection = FamilyActivitySelection()
     
     var body: some View {
@@ -37,19 +37,19 @@ struct ScheduleView: View {
                 isPresented: $scheduleVM.isFamilyActivitySectionActive,
                 selection: $tempSelection
             )
-            .alert("저장 되었습니다.", isPresented: $scheduleVM.isSaveAlertActive) {
+            .alert("Saved successfully.", isPresented: $scheduleVM.isSaveAlertActive) {
                 Button("OK", role: .cancel) {}
             }
-            .alert("모니터링 중단 시 설정한 시간과 앱이 초기화됩니다.", isPresented: $scheduleVM.isStopMonitoringAlertActive) {
-                Button("취소", role: .cancel) {}
-                Button("확인", role: .destructive) {
+            .alert("When monitoring stops, the set time and apps will be reset.", isPresented: $scheduleVM.isStopMonitoringAlertActive) {
+                Button("Cancel", role: .cancel) {}
+                Button("Confirm", role: .destructive) {
                     tempSelection = FamilyActivitySelection()
                     scheduleVM.stopScheduleMonitoring()
                 }
             }
-            .alert("권한 제거 시 스케쥴도 함께 제거됩니다.", isPresented: $scheduleVM.isRevokeAlertActive) {
-                Button("취소", role: .cancel) {}
-                Button("확인", role: .destructive) {
+            .alert("When permission is removed, the schedule will also be removed.", isPresented: $scheduleVM.isRevokeAlertActive) {
+                Button("Cancel", role: .cancel) {}
+                Button("Confirm", role: .destructive) {
                     FamilyControlsManager.shared.requestAuthorizationRevoke()
                 }
             }
@@ -66,10 +66,10 @@ struct ScheduleView: View {
 // MARK: - Views
 extension ScheduleView {
     
-    /// 스케쥴 페이지 우측 툴바 상단 버튼입니다.
+    /// Schedule page right toolbar top button.
     private func savePlanButtonView() -> ToolbarItemGroup<Button<Text>> {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-            let BUTTON_LABEL = "스케쥴 저장"
+            let BUTTON_LABEL = "Save Schedule"
             
             Button {
                 scheduleVM.saveSchedule(selectedApps: tempSelection)
@@ -79,7 +79,7 @@ extension ScheduleView {
         }
     }
     
-    /// 스케쥴 페이지 내 전체 리스트 뷰입니다.
+    /// Complete list view within the schedule page.
     private func setupListView() -> some View {
         List {
             setUpTimeSectionView()
@@ -90,9 +90,9 @@ extension ScheduleView {
         .listStyle(.insetGrouped)
     }
     
-    /// 전체 리스트 중 시간 설정 섹션에 해당하는 뷰입니다.
+    /// View for the time setting section in the main list.
     private func setUpTimeSectionView() -> some View {
-        let TIME_LABEL_LIST = ["시작 시간", "종료 시간"]
+        let TIME_LABEL_LIST = ["Start Time", "End Time"]
         let times = [$scheduleVM.scheduleStartTime, $scheduleVM.scheduleEndTime]
         
         return Section(
@@ -106,9 +106,9 @@ extension ScheduleView {
             }
     }
     
-    /// 전체 리스트 중 앱 설정 섹션에 해당하는 뷰입니다.
+    /// View for the app setting section in the main list.
     private func setUPAppSectionView() -> some View {
-        let BUTTON_LABEL = "변경"
+        let BUTTON_LABEL = "Change"
         let EMPTY_TEXT = "Choose Your App"
         
         return Section(
@@ -140,7 +140,7 @@ extension ScheduleView {
         }
     }
     
-    /// 전체 리스트 중 스케줄 모니터링 중단 섹션에 해당하는 뷰입니다.
+    /// View for the stop schedule monitoring section in the main list.
     private func stopScheduleMonitoringSectionView() -> some View {
         Section(
             header: Text(ScheduleSectionInfo.monitoring.header)
@@ -149,9 +149,9 @@ extension ScheduleView {
         }
     }
     
-    /// 스케줄 모니터링 중단 섹션의 버튼에 해당하는 버튼입니다.
+    /// Button for stopping schedule monitoring.
     private func stopScheduleMonitoringButtonView() -> some View {
-        let BUTTON_LABEL = "스케줄 모니터링 중단"
+        let BUTTON_LABEL = "Stop Schedule Monitoring"
         
         return Button {
             scheduleVM.showStopMonitoringAlert()
@@ -161,7 +161,7 @@ extension ScheduleView {
         }
     }
     
-    /// 전체 리스트 중 권한 제거 섹션에 해당하는 뷰입니다.
+    /// View for the permission removal section in the main list.
     private func revokeAuthSectionView() -> some View {
         Section(
             header: Text(ScheduleSectionInfo.revoke.header)
@@ -170,10 +170,10 @@ extension ScheduleView {
         }
     }
     
-    /// 권한 제거 섹션의 버튼에 해당하는 버튼입니다.
-    /// 버튼 클릭 시 alert 창을 통해 스크린 타임 권한을 제거할 수 있습니다.
+    /// Button for the permission removal section.
+    /// When clicked, it removes Screen Time permission through an alert window.
     private func revokeAuthButtonView() -> some View {
-        let BUTTON_LABEL = "스크린 타임 권한 제거"
+        let BUTTON_LABEL = "Remove Screen Time Permission"
         
         return Button {
             scheduleVM.showRevokeAlert()
@@ -188,7 +188,7 @@ extension ScheduleView {
 // MARK: - Methods
 extension ScheduleView {
     
-    /// 사용자가 선택한 앱 & 도메인 토큰이 비어있는지 확인하기 위한 메서드입니다.
+    /// Method to check if the user-selected app & domain tokens are empty.
     private func isSelectionEmpty() -> Bool {
         tempSelection.applicationTokens.isEmpty &&
         tempSelection.categoryTokens.isEmpty &&

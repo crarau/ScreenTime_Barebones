@@ -12,14 +12,14 @@ import UIKit
 // Override the functions below to customize the shields used in various situations.
 // The system provides a default appearance for any methods that your subclass doesn't override.
 // Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
-// MARK: - ShieldView 커스터마이징
+// MARK: - ShieldView Customization
 class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     
-    // MARK: - 제한 중인 앱/도메인 웹 정보를 받아 ShieldView를 커스터마이징하는 메서드
-    /// 앱/도메인 웹 사용 제한 중일 경우 overlay되는 ShieldView는 ShieldConfiguration를 통해 커스터마이징 할 수 있습니다.
-    /// 각 configuration 메서드로부터 전달받은 앱 정보를 통해 커스터마이징 해보세요.
-    ///  * ShieldConfiguration init 이외에 ShieldView의 커스터마이징은 제한됩니다.
-    ///  * 더 많은 정보는 아래 링크를 확인하세요.
+    // MARK: - Method to customize ShieldView with restricted app/web domain information
+    /// The ShieldView that overlays when app/web domain usage is restricted can be customized using ShieldConfiguration.
+    /// Try customizing using the app information received from each configuration method.
+    ///  * Customization of ShieldView is limited outside ShieldConfiguration init.
+    ///  * For more information, check the link below.
     ///  https://developer.apple.com/documentation/managedsettingsui/shieldconfiguration
     private func setShieldConfig(
         _ tokenName: String,
@@ -30,16 +30,16 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             color: ColorManager.accentColor
         )
         let CUSTOM_SUBTITLE = ShieldConfiguration.Label(
-            text: "\(tokenName)은(는) 사용이 제한되었습니다.",
+            text: "\(tokenName) is restricted.",
             color: .black
         )
         let CUSTOM_PRIMARY_BUTTON_LABEL = ShieldConfiguration.Label(
-            text: "종료하기",
+            text: "Close",
             color: .white
         )
         let CUSTOM_PRIAMRY_BUTTON_BACKGROUND: UIColor = ColorManager.accentColor
         let CUSTOM_SECONDARY_BUTTON_LABEL = ShieldConfiguration.Label(
-            text: "눌러도 효과없음",
+            text: "No effect",
             color: ColorManager.accentColor
         )
         
@@ -67,44 +67,44 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         return hasSecondaryButton ? TWO_BUTTON_SHIELD_CONFIG : ONE_BUTTON_SHIELD_CONFIG
     }
     
-    // MARK: - 어플리케이션만 제한된 앱
+    // MARK: - App with only application restricted
     override func configuration(shielding application: Application) -> ShieldConfiguration {
         // Customize the shield as needed for applications.
         guard let displayName = application.localizedDisplayName else {
-            return setShieldConfig("확인불가 앱")
+            return setShieldConfig("Unrecognized App")
         }
         return setShieldConfig(displayName)
     }
     
-    // MARK: - 카테고리를 통해 어플리케이션이 제한된 앱
+    // MARK: - App with application restricted through category
     override func configuration(
         shielding application: Application,
         in category: ActivityCategory) -> ShieldConfiguration {
             // Customize the shield as needed for applications shielded because of their category.
         guard let displayName = application.localizedDisplayName,
               let categoryName = category.localizedDisplayName else {
-            return setShieldConfig("확인불가 앱")
+            return setShieldConfig("Unrecognized App")
         }
         return setShieldConfig(categoryName + " " + displayName, hasSecondaryButton: true)
     }
     
-    // MARK: - 웹 도메인만 제한된 앱
+    // MARK: - App with only web domain restricted
     override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
         // Customize the shield as needed for web domains.
         guard let displayName = webDomain.domain else {
-            return setShieldConfig("확인불가 웹 도메인")
+            return setShieldConfig("Unrecognized Web Domain")
         }
         return setShieldConfig(displayName)
     }
     
-    // MARK: - 카테고리를 통해 웹 도메인이 제한된 앱
+    // MARK: - App with web domain restricted through category
     override func configuration(
         shielding webDomain: WebDomain,
         in category: ActivityCategory) -> ShieldConfiguration {
             // Customize the shield as needed for web domains shielded because of their category.
         guard let displayName = webDomain.domain,
               let categoryName = category.localizedDisplayName else {
-            return setShieldConfig("확인불가 웹 도메인")
+            return setShieldConfig("Unrecognized Web Domain")
         }
         return setShieldConfig(categoryName + " " + displayName)
     }

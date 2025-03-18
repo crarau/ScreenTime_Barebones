@@ -31,11 +31,11 @@ enum ScheduleSectionInfo {
     var footer: String {
         switch self {
         case .time:
-            return "시작 시간과 종료 시간을 설정하여 앱 사용을 제한하고자 하는\n스케쥴 시간을 설정할 수 있습니다."
+            return "You can set schedule times to restrict app usage by setting start and end times."
         case .apps:
-            return "변경하기 버튼을 눌러 선택한 시간 동안 사용을 제한하고 싶은\n앱 및 웹 도메인을 선택할 수 있습니다."
+            return "Press the change button to select apps and web domains that you want to restrict during the selected time."
         case .monitoring:
-            return "현재 모니터링 중인 스케줄의 모니터링을 중단합니다."
+            return "Stop monitoring the currently monitored schedule."
         case .revoke:
             return ""
         }

@@ -17,17 +17,17 @@ class PermissionVM: ObservableObject {
     let DECORATION_TEXT_INFO = (
         imgSrc: "AppSymbol",
         title: "Screen Time 101",
-        subTitle: "Screen Time API의\n기본적인 기능을 알아봅시다."
+        subTitle: "Let's explore the basic\nfunctions of Screen Time API."
     )
     
-    let PERMISSION_BUTTON_LABEL = "시작하기"
+    let PERMISSION_BUTTON_LABEL = "Get Started"
     
     let SHEET_INFO_LIST = [
-        "ScreebTime API를 활용하여 특정 시간에 앱/웹 사용을 제한하고 모니터링할 수 있습니다.",
-        "더 자세한 정보는 아래 버튼을 클릭하여 연결되는 깃허브 레포를 참고해주세요.\n개선사항 및 문의는 언제든 환영합니다"
+        "You can restrict and monitor app/web usage at specific times using the ScreenTime API.",
+        "For more detailed information, please refer to the GitHub repo through the button below.\nImprovements and inquiries are always welcome."
     ]
     
-    let GIT_LINK_LABEL = "[깃허브 확인하기](https://github.com/CoffeeNaeriRei/ScreenTime_Barebones)"
+    let GIT_LINK_LABEL = "[Check GitHub](https://github.com/CoffeeNaeriRei/ScreenTime_Barebones)"
 }
 
 extension PermissionVM {

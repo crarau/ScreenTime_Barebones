@@ -11,16 +11,16 @@ import ManagedSettings
 // The system provides a default response for any functions that your subclass doesn't override.
 // Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
 // MARK: - ShieldAction
-/// 설정한 스케쥴 시간 중 FamilyActivitySelection으로 설정한 앱/웹 도메인 접근 시
-/// 사용을 제한하는 Block View에서 버튼 클릭 시 동작을 작성할 수 있습니다.
+/// You can write actions for button clicks in the Block View that restricts usage
+/// when accessing apps/web domains set with FamilyActivitySelection during scheduled times.
 class ShieldActionExtension: ShieldActionDelegate {
     
     // MARK: ApplicationToken으로 설정 된 앱에서 버튼 클릭 시 동작을 설정합니다.
-    /// handle 메서드의 인자인 ShieldAction은 두 가지 case로 나누어집니다.
-    ///  - .primaryButtonPressed : ShieldConfiguration의 primaryButtonLabel에 해당됩니다.
-    ///  - .secondaryButtonPressed: ShieldConfiguration의 secondaryButtonLabel에 해당됩니다.
-    /// * case를 구분하지 않거나, 사용하지 않을 경우, 모든 버튼 클릭 시 동작하도록 할 수 있습니다.
-    /// * ShieldConfiguration로 설정 된 secondaryButtonLabel이 없을 경우, 해당 case를 사용할 수 없습니다.
+    /// The ShieldAction parameter of the handle method is divided into two cases:
+    ///  - .primaryButtonPressed: Corresponds to the primaryButtonLabel of ShieldConfiguration.
+    ///  - .secondaryButtonPressed: Corresponds to the secondaryButtonLabel of ShieldConfiguration.
+    /// * If you don't distinguish between cases or don't use them, it can be set to work on all button clicks.
+    /// * If there is no secondaryButtonLabel set in ShieldConfiguration, that case cannot be used.
     override func handle(
         action: ShieldAction,
         for application: ApplicationToken,
@@ -28,17 +28,20 @@ class ShieldActionExtension: ShieldActionDelegate {
             // Handle the action as needed.
             switch action {
             case .primaryButtonPressed:
-                /// 시스템이 현재 어플리케이션이나 웹 브라우저를 닫도록 합니다.
+                /// Makes the system close the current application or web browser.
                 completionHandler(.close)
             case .secondaryButtonPressed:
-                /// 액션에 대한 응답을 지연시키며 뷰를 갱신합니다.
+                /// Delays the response to the action and refreshes the view.
                 completionHandler(.defer)
             @unknown default:
                 fatalError()
             }
         }
     
+    // MARK: Set actions for button clicks in apps set with ApplicationToken
+    /// The ShieldAction parameter of the handle method is divided into two cases:
     // MARK: WebDomainToken으로 설정 된 웹에서 버튼 클릭 시 동작을 설정합니다.
+    // MARK: Set actions for button clicks on web pages set with WebDomainToken
     override func handle(
         action: ShieldAction,
         for webDomain: WebDomainToken,
@@ -48,18 +51,19 @@ class ShieldActionExtension: ShieldActionDelegate {
         }
     
     // MARK: ActivityCategoryToken으로 설정 된 웹에서 버튼 클릭 시 동작을 설정합니다.
-    /// ActivityCategory는 각 Application이 App Category를 기준으로 분류 시킨 상위 카테고리 그룹입니다.
-    /// ActivityCategory 내의 모든 Application 설정 시 ActivityCategory으로 설정하였다고 시스템은 인식합니다.
+    // MARK: Set actions for button clicks on content set with ActivityCategoryToken
+    /// ActivityCategory is a higher-level category group that classifies each Application based on App Category.
+    /// The system recognizes it as set with ActivityCategory when all Applications within the ActivityCategory are set.
     override func handle(
         action: ShieldAction,
         for category: ActivityCategoryToken,
         completionHandler: @escaping (ShieldActionResponse) -> Void) {
             switch action {
             case .primaryButtonPressed:
-                /// 시스템이 현재 어플리케이션이나 웹 브라우저를 닫도록 합니다.
+                /// Makes the system close the current application or web browser.
                 completionHandler(.close)
             case .secondaryButtonPressed:
-                /// 추가 동작이 없으며 뷰를 갱신하지 않습니다.
+                /// No additional action and does not refresh the view.
                 completionHandler(.none)
             @unknown default:
                 fatalError()

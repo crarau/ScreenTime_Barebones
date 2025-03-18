@@ -1,28 +1,28 @@
 ---
+about: Basic template for creating an issue.
 name: Work Template
-about: 이슈생성을 위한 기본 템플릿입니다.
-title: "[Feat] issue name"
-labels: ""
-assignees: ""
+title: '[Task] New Task title'
+labels: ''
+assignees: ''
 ---
 
-## 이슈 요약
+## Issue Summary
 
-> 해당 이슈가 어떤 이슈인지에 대한 간략한 설명을 추가합니다.
+> Add a brief description of what this issue is about.
 
-## 체크리스트
+## Checklist
 
-> 이슈에 관련된 요구사항이나 확인해야할 사항이 있으면 추가합니다.
+> Add requirements or items to check related to this issue.
 
-- [ ] 요구사항 1
-- [ ] 요구사항 2
+- [ ] Requirement 1
+- [ ] Requirement 2
 
-## 참고자료
+## References
 
-> 해당 이슈를 해결하기 위해 참고해야할 자료가 있다면 추가합니다.
+> Add reference materials that may help resolve this issue.
 
-🔗 [링크](url)
+🔗 [Link](url)
 
-## 기타 (스크린샷 등)
+## Other (Screenshots, etc.)
 
-> 이슈에 대한 이해를 돕기 위한 자료가 있다면 추가합니다.
+> Add any materials that help understand the issue better.
