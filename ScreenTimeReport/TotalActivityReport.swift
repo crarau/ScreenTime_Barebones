@@ -13,8 +13,7 @@ extension DeviceActivityReport.Context {
     // If your app initializes a DeviceActivityReport with this context, then the system will use
     // your extension's corresponding DeviceActivityReportScene to render the contents of the
     // report.
-    /// You need an extension that corresponds to the DeviceActivityReportScene to be used for rendering the
- contents of this report. ex) TotalActivityReport
+    /// You need an extension that corresponds to the DeviceActivityReportScene to be used for rendering the contents of this report. ex) TotalActivityReport
     static let totalActivity = Self("Total Activity")
 }
 
