@@ -5,7 +5,7 @@
 //  Created by 김영빈 on 2023/08/11.
 //
 
-// MARK: - Device Activity Report 관련 데이터 모델이 정의되어 있는 파일입니다.
+// MARK: - This file defines data models related to Device Activity Reports
 import Foundation
 import ManagedSettings
 
@@ -23,7 +23,7 @@ struct AppDeviceActivity: Identifiable {
 }
 
 extension TimeInterval {
-    /// TimeInterval 타입 값을 00:00 형식의 String으로 변환해주는 메서드
+    /// Method to convert TimeInterval type value to String in 00:00 format
     func toString() -> String {
         let time = NSInteger(self)
         let minutes = (time / 60) % 60
