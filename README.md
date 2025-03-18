@@ -1,5 +1,7 @@
 # ScreenTime_Barebones
 
+> **Note:** This repository is a clone from https://github.com/CoffeeNaeriRei/ScreenTime_Barebones
+
 ### Project Introduction
 
 - This is a bare-bones project to help you utilize Apple's Screen Time functionality.
